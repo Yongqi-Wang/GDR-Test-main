@@ -3,6 +3,8 @@
 #include "unix_socket.h"
 #include "ib_comm.h"
 
+#define MSG "READ operation content"
+#define MSG_SIZE (strlen(MSG) + 1) 
 /******************************************************************************
 * Function: print_config
 *
@@ -250,6 +252,15 @@ int main(int argc, char *argv[])
 		fprintf(stderr, "failed to connect QPs\n");
 		goto main_exit;
 	}
+
+	//========================================================copying msg to GPU
+    char* msg = (char*)malloc(MSG_SIZE);
+    strcpy(msg,MSG);   
+    mret = cudaMemcpy(dataBuf, msg, MSG_SIZE,cudaMemcpyHostToDevice);
+    if( mret != cudaSuccess ) {
+         printf("Cuda mem copy failure '%s'", cudaGetErrorString(mret));
+    }
+    printf("Msg write to GPU.\n");  
 
 	/* ====================================================== read/write operation from remote peer */
 	/* Sync so we are sure server side has data ready before client tries to read it */
