@@ -179,9 +179,10 @@ int main(int argc, char *argv[])
         printf("Cuda malloc failure '%s'", cudaGetErrorString(mret));
     }
 
-    /* /* no server name specified means this is not the peer procedure*/
+    /* no server name specified means this is not the peer procedure*/
+	/*
     if(!config.server_name){
-    	/*===================================================================== create unix domain socket */
+    	//===================================================================== create unix domain socket
 	    int listenfd,connfd;
 	    listenfd = unix_socket_listen("foo.sock");
 	    if(listenfd<0)
@@ -201,13 +202,13 @@ int main(int argc, char *argv[])
 	    printf("Unix sock connected\n");	
 	  
 
-		/* ===================================================================== sending shared cuda memory */
+		// ===================================================================== sending shared cuda memory 
 		cudaIpcMemHandle_t *router_mem_handle = (cudaIpcMemHandle_t *)malloc(sizeof(cudaIpcMemHandle_t));
 		mret = cudaIpcGetMemHandle(router_mem_handle,dataBuf);
 		if( mret != cudaSuccess ) {
 	        printf("Cuda get handle failure '%s'", cudaGetErrorString(mret));
 	    }
-		/* send the handle to client container process */
+		// send the handle to client container process 
 		int size = send(connfd, router_mem_handle, sizeof(cudaIpcMemHandle_t), 0);
 	    if(size>=0)
 	    {
@@ -218,7 +219,7 @@ int main(int argc, char *argv[])
 	    	printf("Error[%d] when Sending CUDA handle:%s.\n",errno,strerror(errno));
 	    }
 
-		/* waiting for the signal (from client container) to send data */
+		// waiting for the signal (from client container) to send data 
 		int signal = -1;
 		size = recv(connfd, &signal, sizeof(int), 0);
 		if(size>=0)
@@ -229,7 +230,8 @@ int main(int argc, char *argv[])
 	    {
 	    	printf("Error[%d] when Receiving signal:%s.\n",errno,strerror(errno));
 	    }
-    } */
+    }
+	*/
 
     /* ======================================================== setup connection with peer */
 	/* print the used parameters for info*/
